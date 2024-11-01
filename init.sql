@@ -1,18 +1,18 @@
-CREATE TABLE IF NOT EXISTS parent_table (
+CREATE TABLE IF NOT EXISTS students (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS child_table (
-    id SERIAL PRIMARY KEY,
-    parent_id INT,
-    description VARCHAR(255),
-    FOREIGN KEY (parent_id) REFERENCES parent_table(id)
-    ON DELETE CASCADE
-);
+INSERT INTO students (name) VALUES ('Lois Lane'), ('Lex Luthor');
 
-INSERT INTO parent_table VALUES (1, 'some_name');
 
-INSERT INTO child_table VALUES (1, 1, 'some description');
+CREATE OR REPLACE PROCEDURE add_student(student_name VARCHAR(100))
+LANGUAGE plpgsql
+AS $$
+BEGIN
+INSERT INTO Students (name)
+VALUES (student_name);
+END;
+$$;
 
-DELETE FROM parent_table WHERE id = 1;
+CALL add_student('Clark Kent');
